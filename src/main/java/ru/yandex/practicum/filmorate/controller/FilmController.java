@@ -14,7 +14,7 @@ import java.util.*;
 @RequestMapping("/films")
 @Slf4j
 public class FilmController {
-    private final static LocalDate MIN_RELEASE_DATE = LocalDate.of(1895, 12, 28);
+    private static final LocalDate MIN_RELEASE_DATE = LocalDate.of(1895, 12, 28);
     private final Map<Integer, Film> films = new HashMap<>();
     private int id = 0;
 
