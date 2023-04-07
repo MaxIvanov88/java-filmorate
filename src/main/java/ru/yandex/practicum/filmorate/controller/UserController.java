@@ -24,7 +24,7 @@ public class UserController {
             log.error("User with this id {} extents", user.getId());
             throw new ValidationException("User with this id extents");
         }
-        validation(user);
+        validate(user);
         id++;
         user.setId(id);
         users.put(id, user);
@@ -39,7 +39,7 @@ public class UserController {
             log.error("User with this id there isn't");
             throw new ValidationException("User with this id there is not");
         }
-        validation(user);
+        validate(user);
         users.put(id, user);
         log.info("User added {}", user);
         return user;
@@ -52,7 +52,7 @@ public class UserController {
         return userList;
     }
 
-    private void validation(User user) {
+    private void validate(User user) {
         if (user.getEmail().isBlank()) {
             log.error("Email {} can't be empty", user.getEmail());
             throw new ValidationException("Email cannot be empty");

@@ -121,4 +121,38 @@ public class UserControllerTest {
         assertThrows(RuntimeException.class,
                 () -> userController.createUser(null));
     }
+
+    @Test
+    public void createUserEmailNull() {
+        User wrongUser = User.builder()
+                .login("login")
+                .birthday(LocalDate.of(1988, 10, 2))
+                .name("Name")
+                .build();
+        assertThrows(RuntimeException.class,
+                () -> userController.createUser(wrongUser));
+    }
+
+    @Test
+    public void createUserLoginNull() {
+        User wrongUser = User.builder()
+                .email("email@email.ru")
+                .birthday(LocalDate.of(1988, 10, 2))
+                .name("Name")
+                .build();
+        assertThrows(RuntimeException.class,
+                () -> userController.createUser(wrongUser));
+    }
+
+    @Test
+    public void createUserBirthDayNull() {
+        User wrongUser = User.builder()
+                .login("login")
+                .email("email@email.ru")
+                .name("Name")
+                .build();
+        assertThrows(RuntimeException.class,
+                () -> userController.createUser(wrongUser));
+    }
 }
+

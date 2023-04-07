@@ -115,4 +115,48 @@ public class FilmControllerTest {
         assertThrows(RuntimeException.class,
                 () -> filmController.createFilm(null));
     }
+
+    @Test
+    public void createFilmNameNull() {
+        Film wrongFilm = Film.builder()
+                .description("newTestDescription")
+                .duration(90)
+                .releaseDate(LocalDate.of(2000, 12, 1))
+                .build();
+        assertThrows(RuntimeException.class,
+                () -> filmController.createFilm(wrongFilm));
+    }
+
+    @Test
+    public void createFilmDescriptionNull() {
+        Film wrongFilm = Film.builder()
+                .name("testFilm")
+                .duration(90)
+                .releaseDate(LocalDate.of(2000, 12, 1))
+                .build();
+        assertThrows(RuntimeException.class,
+                () -> filmController.createFilm(wrongFilm));
+    }
+
+    @Test
+    public void createFilmDurationNull() {
+        Film wrongFilm = Film.builder()
+                .name("testFilm")
+                .description("newTestDescription")
+                .releaseDate(LocalDate.of(2000, 12, 1))
+                .build();
+        assertThrows(RuntimeException.class,
+                () -> filmController.createFilm(wrongFilm));
+    }
+
+    @Test
+    public void createFilmReleaseDateNull() {
+        Film wrongFilm = Film.builder()
+                .name("testFilm")
+                .description("newTestDescription")
+                .duration(90)
+                .build();
+        assertThrows(RuntimeException.class,
+                () -> filmController.createFilm(wrongFilm));
+    }
 }

@@ -25,7 +25,7 @@ public class FilmController {
             log.error("Film with this id {} exists ", film.getId());
             throw new ValidationException("Film with this id exists");
         }
-        validation(film);
+        validate(film);
         id++;
         film.setId(id);
         films.put(id, film);
@@ -40,7 +40,7 @@ public class FilmController {
             log.error("Film with this id {} there is not", film.getId());
             throw new ValidationException("Film with this id there is not");
         }
-        validation(film);
+        validate(film);
         films.put(film.getId(), film);
         log.info("Film {} was updated", film);
         return film;
@@ -53,8 +53,8 @@ public class FilmController {
         return filmList;
     }
 
-    private void validation(Film film) {
-        if (film.getName().isBlank() || film.getName() == null) {
+    private void validate(Film film) {
+        if (film.getName().isBlank()) {
             log.error("Film name {} cannot be empty", film.getName());
             throw new ValidationException("Film name cannot be empty");
         }
