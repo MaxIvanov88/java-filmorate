@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
@@ -24,12 +25,14 @@ public class UserController {
     @PostMapping
     public User createUser(@NotNull @Valid @RequestBody User user) {
         log.info("Post request received: {}", user);
+        validate(user);
         return userService.createUser(user);
     }
 
     @PutMapping
     public User upDateUser(@NotNull @Valid @RequestBody User user) {
         log.info("Put request received: {}", user);
+        validate(user);
         return userService.upDateUser(user);
     }
 
@@ -61,6 +64,18 @@ public class UserController {
     @GetMapping("/{id}/friends/common/{otherId}")
     public List<User> getCommonFriends(@PathVariable("id") Long id, @PathVariable("otherId") Long otherId) {
         return userService.getCommonFriends(id, otherId);
+    }
+
+    private void validate(User user) {
+        if (user.getLogin().contains(" ")) {
+            log.error("Login {} cannot contain spaces", user.getLogin());
+            throw new ValidationException("Login cannot contain spaces ");
+        }
+
+        if (user.getName() == null || user.getName().isBlank()) {
+            user.setName(user.getLogin());
+            log.info("User name changed to login {}", user.getLogin());
+        }
     }
 }
 

@@ -4,7 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,13 +14,12 @@ import java.util.Set;
 @Builder
 public class User {
     private long id;
-    @NotNull
-    @Email
+    @Email()
     private final String email;
-    @NotNull
+    @NotBlank
     private final String login;
     private String name;
-    @NotNull
+    @PastOrPresent
     private final LocalDate birthday;
     private final Set<Long> friends = new HashSet<>();
 
@@ -30,6 +30,4 @@ public class User {
     public boolean deleteFriend(Long userId) {
         return friends.remove(userId);
     }
-
-
 }
