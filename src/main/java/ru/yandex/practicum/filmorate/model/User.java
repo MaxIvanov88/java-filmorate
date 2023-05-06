@@ -1,7 +1,8 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -11,23 +12,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     private long id;
-    @Email()
-    private final String email;
+    @Email(regexp = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
+    private String email;
     @NotBlank
-    private final String login;
+    private String login;
     private String name;
     @PastOrPresent
-    private final LocalDate birthday;
+    private LocalDate birthday;
     private final Set<Long> friends = new HashSet<>();
-
-    public boolean addFriend(Long userId) {
-        return friends.add(userId);
-    }
-
-    public boolean deleteFriend(Long userId) {
-        return friends.remove(userId);
-    }
 }
