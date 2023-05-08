@@ -16,8 +16,8 @@ public class MpaController {
     private final MpaService mpaService;
 
     @Autowired
-    public MpaController(MpaService MPAService) {
-        this.mpaService = MPAService;
+    public MpaController(MpaService mpaService) {
+        this.mpaService = mpaService;
     }
 
     @GetMapping
