@@ -13,20 +13,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/mpa")
 public class MpaController {
-    private final MpaService MPAService;
+    private final MpaService mpaService;
 
     @Autowired
     public MpaController(MpaService MPAService) {
-        this.MPAService = MPAService;
+        this.mpaService = MPAService;
     }
 
     @GetMapping
     public List<MPA> getAll() {
-        return MPAService.getAll();
+        return mpaService.getAll();
     }
 
     @GetMapping("/{id}")
     public MPA getById(@PathVariable int id) {
-        return MPAService.getMPA(id);
+        return mpaService.getMPA(id);
     }
 }
