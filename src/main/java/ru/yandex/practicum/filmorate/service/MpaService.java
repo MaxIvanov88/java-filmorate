@@ -9,11 +9,11 @@ import ru.yandex.practicum.filmorate.storage.MPADao;
 import java.util.List;
 
 @Service
-public class MPAService {
+public class MpaService {
     private final MPADao mpaDao;
 
     @Autowired
-    public MPAService(MPADao mpaDao) {
+    public MpaService(MPADao mpaDao) {
         this.mpaDao = mpaDao;
     }
 
