@@ -2,14 +2,13 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +20,7 @@ public class FilmService {
     private final UserStorage userStorage;
 
     @Autowired
-    public FilmService(InMemoryFilmStorage filmStorage, InMemoryUserStorage userStorage) {
+    public FilmService(@Qualifier("FilmDbStorage")FilmStorage filmStorage, UserStorage userStorage) {
         this.filmStorage = filmStorage;
         this.userStorage = userStorage;
     }
@@ -42,31 +41,31 @@ public class FilmService {
         return filmStorage.getFilm(id);
     }
 
-    public Film addLikeByUser(Long userId, Long filmId) {
+    public Film addLikeByUser(long userId, long filmId) {
         if (!filmStorage.getAllFilms().contains(filmStorage.getFilm(filmId))) {
-            throw new FilmNotFoundException("Id with number " + filmId + " does not exist");
+            throw new FilmNotFoundException(filmId);
         }
         if (!userStorage.getAllUsers().contains(userStorage.getUser(userId))) {
-            throw new UserNotFoundException("Id with  number" + userId + " does not exist");
+            throw new UserNotFoundException(userId);
         }
-        filmStorage.getFilm(filmId).addLike(userId);
+        filmStorage.addLike(filmId,userId);
         log.info("The user " + userId + " laked the film " + filmId);
         return filmStorage.getFilm(filmId);
     }
 
-    public Film removeLikeByUser(Long userId, Long filmId) {
+    public Film removeLikeByUser(long userId, long filmId) {
         if (!filmStorage.getFilm(filmId).getLikes().contains(userId)) {
-            throw new UserNotFoundException("Id with  number" + userId + " does not exist");
+            throw new UserNotFoundException(userId);
         }
         if (!filmStorage.getAllFilms().contains(filmStorage.getFilm(filmId))) {
-            throw new FilmNotFoundException("Id with number " + filmId + " does not exist");
+            throw new FilmNotFoundException(filmId);
         }
-        filmStorage.getFilm(filmId).deleteLike(userId);
+        filmStorage.deleteLike(filmId,userId);
         log.info("The user " + userId + " delete lake the film " + filmId);
         return filmStorage.getFilm(filmId);
     }
 
-    public List<Film> getPopularFilms(Integer count) {
+    public List<Film> getPopularFilms(int count) {
         log.info("Returned" + count + "most popular film");
         return filmStorage.getAllFilms().stream()
                 .sorted(((o1, o2) -> Integer.compare(o2.getLikes().size(), o1.getLikes().size())))
